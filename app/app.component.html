@@ -1,0 +1,39 @@
+<md-toolbar color="primary">
+  <span>Shortlink</span>
+</md-toolbar>
+
+<md-card class="input-card">
+  <md-card-content>
+    <form class="url-form" (ngSubmit)="add()">
+      <md-form-field class="url-input">
+        <input mdInput [formControl]="urlInputControl" placeholder="Input URL here">
+          <md-error *ngIf="urlInputControl.valid">
+            Please enter a valid url
+          </md-error>
+      </md-form-field>
+    </form>
+  </md-card-content>
+  <md-card-actions align="end">
+    <button md-button color="primary" (click)="clear()"
+    *ngIf="urlInputControl.value !== ''">Clear</button>
+    <button md-raised-button color="primary" (click)="add()" *ngIf="urlInputControl.value !== '' && urlInputControl.valid">Shorten</button>
+  </md-card-actions>
+</md-card>
+
+<md-grid-list cols="4">
+  <md-grid-tile rowHeight="120px" *ngFor="let item of list" class="card-tile">
+      <md-card class="card-full">
+        <md-card-subtitle *ngIf="item.short_url !== undefined"><a [href]="item.short_url">{{ item.short_url }}</a></md-card-subtitle>
+        <md-card-subtitle *ngIf="item.short_url === undefined"><md-progress-bar mode="query"></md-progress-bar></md-card-subtitle>
+        <md-card-content>
+          <p>From:</p>
+          <p><a [href]="item.url">{{ item.url }}</a></p>
+        </md-card-content>
+        <md-card-actions align="end">
+          <button md-fab color="primary" (click)="copy(item)" *ngIf="item.short_url !== undefined">
+            <md-icon>assignment</md-icon>
+          </button>
+        </md-card-actions>
+    </md-card>
+  </md-grid-tile>
+</md-grid-list>
